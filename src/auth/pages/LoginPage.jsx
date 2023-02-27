@@ -56,7 +56,6 @@ export const LoginPage = () => {
                   onClick={handleClick}
                   loading={Loading}
                   variant="outlined"
-                  
                 >
                   <span>Login</span>
                 </LoadingButton>
