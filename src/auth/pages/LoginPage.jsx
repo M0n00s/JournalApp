@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
-import { Button, TextField, Typography } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
+import { Button, Link, TextField, Typography } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
+import GoogleIcon from "@mui/icons-material/Google";
+import { AuthLayout } from "../layout/AuthLayout";
 
 export const LoginPage = () => {
   const [Loading, setLoading] = useState(false);
@@ -10,65 +13,74 @@ export const LoginPage = () => {
     setLoading(!Loading);
   };
   return (
-    <Grid
-      container
-      spacing={0}
-      direction="colunm"
-      alignItems="center"
-      justifyContent="center"
-      sx={{ minHeight: "100vh", backgroundColor: "primary.main", padding: 4 }}
-    >
-      <Grid
-        item
-        className="box-shadow"
-        xs={12}
-        sm={6}
-        md={4}
-        lg={3}
-        sx={{ backgroundColor: "white", padding: 3, borderRadius: 2 }}
-      >
-        <Typography variant="h5" sx={{ mb: 1 }}>
-          Login
-        </Typography>
-        <form>
-          <Grid container>
-            <Grid item>
-              <TextField
-                sx={{ mt: 2 }}
-                label="Email"
-                type="email"
-                placeholder="email@google.com"
-                size="small"
-                fullWidth
-              />
-              <TextField
-                sx={{ mt: 2 }}
-                label="Password"
-                type="password"
-                placeholder="Password"
-                size="small"
-                fullWidth
-              />
+    <AuthLayout title="Login">
+      <form>
+        <Grid container>
+          <Grid item>
+            <TextField
+              sx={{ mt: 2 }}
+              label="Email"
+              type="email"
+              placeholder="email@google.com"
+              size="small"
+              fullWidth
+            />
+            <TextField
+              sx={{ mt: 2 }}
+              label="Password"
+              type="password"
+              placeholder="Password"
+              size="small"
+              fullWidth
+            />
+            <Link
+              component={RouterLink}
+              color="inherit"
+              to="/auth/register"
+              sx={{ fontSize: "0.8em", mt: 1 }}
+            >
+              Forgot password
+            </Link>
+          </Grid>
+          <Grid
+            container
+            direction="row"
+            spacing={2}
+            sx={{ mt: 1 }}
+            alignItems="center"
+          >
+            <Grid item xs={12} md={5}>
+              <LoadingButton
+                sx={{ width: 1 }}
+                onClick={handleClick}
+                loading={Loading}
+                variant="contained"
+              >
+                Login
+              </LoadingButton>
             </Grid>
-            <Grid container spacing={1} sx={{ mt: 2 }}>
-              <Grid item>
-                <LoadingButton
-                  onClick={handleClick}
-                  loading={Loading}
-                  variant="outlined"
-                >
-                  <span>Login</span>
-                </LoadingButton>
-              </Grid>
-              <Grid item>
-                <Button size="small" variant="outline">
-                  Register
-                </Button>
-              </Grid>
+            <Grid item xs={12} md={7}>
+              <Button
+                variant="outlined"
+                startIcon={<GoogleIcon />}
+                sx={{ width: 1 }}
+              >
+                <Typography noWrap>Iniciar con Google</Typography>
+              </Button>
             </Grid>
           </Grid>
-        </form>
-      </Grid>
-    </Grid>
+          <Grid container direction="row" justifyContent="end">
+            <Link
+              component={RouterLink}
+              color="inherit"
+              to="/auth/register"
+              sx={{ fontSize: "0.8em", mt: 1 }}
+            >
+              create an account
+            </Link>
+          </Grid>
+        </Grid>
+      </form>
+    </AuthLayout>
   );
 };
