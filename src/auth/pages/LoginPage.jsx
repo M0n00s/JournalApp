@@ -5,16 +5,29 @@ import { Button, Link, TextField, Typography } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import GoogleIcon from "@mui/icons-material/Google";
 import { AuthLayout } from "../layout/AuthLayout";
+import { useForm } from "../../hooks/useForm";
+import { ClassSharp } from "@mui/icons-material";
 
 export const LoginPage = () => {
   const [Loading, setLoading] = useState(false);
 
-  const handleClick = () => {
-    setLoading(!Loading);
+  const { password, email, onInputChange } = useForm({
+    email: "",
+    password: "",
+  });
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    console.log({ email, password });
+    setTimeout(() => {
+      setLoading(false);
+      console.log("first");
+    }, 2000);
   };
   return (
     <AuthLayout title="Login">
-      <form>
+      <form onSubmit={onSubmit}>
         <Grid container>
           <Grid item>
             <TextField
@@ -23,6 +36,9 @@ export const LoginPage = () => {
               type="email"
               placeholder="email@google.com"
               size="small"
+              name="email"
+              value={email}
+              onChange={onInputChange}
               fullWidth
             />
             <TextField
@@ -31,6 +47,9 @@ export const LoginPage = () => {
               type="password"
               placeholder="Password"
               size="small"
+              name="password"
+              value={password}
+              onChange={onInputChange}
               fullWidth
             />
             <Link
@@ -49,17 +68,21 @@ export const LoginPage = () => {
             sx={{ mt: 1 }}
             alignItems="center"
           >
-            <Grid item xs={12} md={5}>
+            <Grid item xs={12}>
               <LoadingButton
                 sx={{ width: 1 }}
-                onClick={handleClick}
+                onClick={onSubmit}
                 loading={Loading}
                 variant="contained"
               >
                 Login
               </LoadingButton>
             </Grid>
-            <Grid item xs={12} md={7}>
+            <Grid item xs={12}>
+              <Typography align="center">or</Typography>
+            </Grid>
+
+            <Grid item xs={12}>
               <Button
                 variant="outlined"
                 startIcon={<GoogleIcon />}
