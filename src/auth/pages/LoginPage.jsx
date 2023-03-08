@@ -1,30 +1,42 @@
 import React, { useState } from "react";
-import Grid from "@mui/material/Grid";
 import { Link as RouterLink } from "react-router-dom";
-import { Button, Link, TextField, Typography } from "@mui/material";
+import { useDispatch } from "react-redux";
+
+import { Grid, Button, Link, TextField, Typography } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import GoogleIcon from "@mui/icons-material/Google";
+
 import { AuthLayout } from "../layout/AuthLayout";
 import { useForm } from "../../hooks/useForm";
-import { ClassSharp } from "@mui/icons-material";
+import {
+  chekingAuthentication,
+  startGoogleSignIn,
+} from "../../store/auth/thunks";
 
 export const LoginPage = () => {
+  const dispatch = useDispatch();
   const [Loading, setLoading] = useState(false);
 
   const { password, email, onInputChange } = useForm({
     email: "",
     password: "",
   });
-
-  const onSubmit = async (e) => {
+  //Login user
+  const onSubmit = (e) => {
     e.preventDefault();
+    dispatch(chekingAuthentication());
+
     setLoading(true);
     console.log({ email, password });
     setTimeout(() => {
       setLoading(false);
-      console.log("first");
     }, 2000);
   };
+  //login Google
+  const onGoogleSignIn = () => {
+    dispatch(startGoogleSignIn());
+  };
+
   return (
     <AuthLayout title="Login">
       <form onSubmit={onSubmit}>
@@ -87,6 +99,8 @@ export const LoginPage = () => {
                 variant="outlined"
                 startIcon={<GoogleIcon />}
                 sx={{ width: 1 }}
+                disabled={Loading}
+                onClick={onGoogleSignIn}
               >
                 <Typography noWrap>Iniciar con Google</Typography>
               </Button>
