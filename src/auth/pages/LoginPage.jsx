@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Grid, Button, Link, TextField, Typography } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -15,7 +15,9 @@ import {
 
 export const LoginPage = () => {
   const dispatch = useDispatch();
-  const [Loading, setLoading] = useState(false);
+  //disable Buttons
+  const { status } = useSelector((state) => state.auth);
+  const Loading = useMemo(() => status === "checking", [status]);
 
   const { password, email, onInputChange } = useForm({
     email: "",
