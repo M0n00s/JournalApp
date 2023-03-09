@@ -1,28 +1,51 @@
-import React, { useState } from "react";
-import Grid from "@mui/material/Grid";
+import React, { useMemo, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { Button, Link, TextField, Typography } from "@mui/material";
+import { useSelector } from "react-redux";
+
+import Grid from "@mui/material/Grid";
+import { Link, TextField, Typography } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
-import GoogleIcon from "@mui/icons-material/Google";
+
 import { AuthLayout } from "../layout/AuthLayout";
+import { useForm } from "../../hooks/useForm";
 
 export const RegisterPage = () => {
-  const [Loading, setLoading] = useState(false);
+  //disabled button
+  const { status } = useSelector((state) => state.auth);
+  const Loading = useMemo(() => status === "checking", [status]);
+  // form data
+  const { email, password, confirmPass, displayName, onInputChange } = useForm({
+    email: "",
+    password: "",
+    confirmPass: "",
+    displayName: "",
+  });
 
-  const handleClick = () => {
-    setLoading(!Loading);
+  const onRegister = (e) => {
+    e.preventDefault();
+    console.log({
+      email,
+      password,
+      confirmPass,
+      displayName,
+    });
   };
   return (
     <AuthLayout title="Register">
-      <form>
+      <form onSubmit={onRegister}>
         <Grid container>
           <Grid item>
             <TextField
               sx={{ mt: 2 }}
-              label="Nombre Completo"
+              label="Name"
               type="text"
               placeholder="First Name"
+              name="displayName"
+              value={displayName}
+              onChange={onInputChange}
               size="small"
+              error
+              helperText="este campo es obligatorio"
               fullWidth
             />
             <TextField
@@ -31,6 +54,9 @@ export const RegisterPage = () => {
               type="email"
               placeholder="email@google.com"
               size="small"
+              name="email"
+              value={email}
+              onChange={onInputChange}
               fullWidth
             />
             <TextField
@@ -39,6 +65,20 @@ export const RegisterPage = () => {
               type="password"
               placeholder="Password"
               size="small"
+              name="password"
+              value={password}
+              onChange={onInputChange}
+              fullWidth
+            />
+            <TextField
+              sx={{ mt: 2 }}
+              label="Confirm Password"
+              type="password"
+              placeholder="Confirm Password"
+              size="small"
+              name="confirmPass"
+              value={confirmPass}
+              onChange={onInputChange}
               fullWidth
             />
           </Grid>
@@ -52,7 +92,7 @@ export const RegisterPage = () => {
             <Grid item xs={12}>
               <LoadingButton
                 sx={{ width: 1 }}
-                onClick={handleClick}
+                type="submit"
                 loading={Loading}
                 variant="contained"
               >
