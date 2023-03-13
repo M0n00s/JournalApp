@@ -17,10 +17,12 @@ const formData = {
 };
 
 const formValidatros = {
-  email: [],
-  password: [],
-  confirmPass: [],
-  displayName: [],
+  email: [(value) => value.includes("@"), "the email must have a @"],
+  password: [
+    (value) => value.length >= 6,
+    "passwors must have be more than 6 letters",
+  ],
+  displayName: [(value) => value.length >= 1, "this field is required"],
 };
 
 export const RegisterPage = () => {
@@ -28,11 +30,19 @@ export const RegisterPage = () => {
   const { status } = useSelector((state) => state.auth);
   const Loading = useMemo(() => status === "checking", [status]);
   // form data
-  const { email, password, confirmPass, displayName, onInputChange } = useForm(
-    formData,
-    formValidatros
-  );
+  const {
+    email,
+    password,
+    confirmPass,
+    displayName,
+    onInputChange,
+    formValidation,
+    displayNameValid,
+    emailValid,
+    passwordValid,
+  } = useForm(formData, formValidatros);
 
+  console.log(formValidation);
   const onRegister = (e) => {
     e.preventDefault();
     console.log({
@@ -56,8 +66,8 @@ export const RegisterPage = () => {
               value={displayName}
               onChange={onInputChange}
               size="small"
-              error
-              helperText="este campo es obligatorio"
+              error={displayNameValid}
+              helperText={displayNameValid}
               fullWidth
             />
             <TextField
