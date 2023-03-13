@@ -9,17 +9,29 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { AuthLayout } from "../layout/AuthLayout";
 import { useForm } from "../../hooks/useForm";
 
+const formData = {
+  email: "",
+  password: "",
+  confirmPass: "",
+  displayName: "",
+};
+
+const formValidatros = {
+  email: [],
+  password: [],
+  confirmPass: [],
+  displayName: [],
+};
+
 export const RegisterPage = () => {
   //disabled button
   const { status } = useSelector((state) => state.auth);
   const Loading = useMemo(() => status === "checking", [status]);
   // form data
-  const { email, password, confirmPass, displayName, onInputChange } = useForm({
-    email: "",
-    password: "",
-    confirmPass: "",
-    displayName: "",
-  });
+  const { email, password, confirmPass, displayName, onInputChange } = useForm(
+    formData,
+    formValidatros
+  );
 
   const onRegister = (e) => {
     e.preventDefault();
