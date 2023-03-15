@@ -66,7 +66,7 @@ export const RegisterPage = () => {
               value={displayName}
               onChange={onInputChange}
               size="small"
-              error={displayNameValid}
+              error={displayNameValid !== null}
               helperText={displayNameValid}
               fullWidth
             />
