@@ -29,7 +29,7 @@ export const LoginPage = () => {
     dispatch(chekingAuthentication());
 
     setLoading(true);
-    console.log({ email, password });
+    // console.log({ email, password });
     setTimeout(() => {
       setLoading(false);
     }, 2000);

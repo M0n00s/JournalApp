@@ -12,7 +12,6 @@ import { useForm } from "../../hooks/useForm";
 const formData = {
   email: "",
   password: "",
-  confirmPass: "",
   displayName: "",
 };
 
@@ -26,6 +25,7 @@ const formValidatros = {
 };
 
 export const RegisterPage = () => {
+  const [formSubmited, setFormSubmited] = useState(false);
   //disabled button
   const { status } = useSelector((state) => state.auth);
   const Loading = useMemo(() => status === "checking", [status]);
@@ -33,24 +33,17 @@ export const RegisterPage = () => {
   const {
     email,
     password,
-    confirmPass,
     displayName,
     onInputChange,
-    formValidation,
+
     displayNameValid,
     emailValid,
     passwordValid,
   } = useForm(formData, formValidatros);
 
-  console.log(formValidation);
   const onRegister = (e) => {
     e.preventDefault();
-    console.log({
-      email,
-      password,
-      confirmPass,
-      displayName,
-    });
+    setFormSubmited(true);
   };
   return (
     <AuthLayout title="Register">
@@ -66,7 +59,7 @@ export const RegisterPage = () => {
               value={displayName}
               onChange={onInputChange}
               size="small"
-              error={displayNameValid !== null}
+              error={!!displayNameValid && formSubmited}
               helperText={displayNameValid}
               fullWidth
             />
@@ -79,6 +72,8 @@ export const RegisterPage = () => {
               name="email"
               value={email}
               onChange={onInputChange}
+              error={!!emailValid && formSubmited}
+              helperText={emailValid}
               fullWidth
             />
             <TextField
@@ -90,17 +85,8 @@ export const RegisterPage = () => {
               name="password"
               value={password}
               onChange={onInputChange}
-              fullWidth
-            />
-            <TextField
-              sx={{ mt: 2 }}
-              label="Confirm Password"
-              type="password"
-              placeholder="Confirm Password"
-              size="small"
-              name="confirmPass"
-              value={confirmPass}
-              onChange={onInputChange}
+              error={!!passwordValid && formSubmited}
+              helperText={passwordValid}
               fullWidth
             />
           </Grid>
